@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisteredRedirectRoute from "./components/RegisteredRedirectRoute";
-import Login from "./pages/login";
-import Register from "./pages/register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Products from "./pages/Products";
 import ProtectedSharedLayout from "./components/ProtectedSharedLayout";
 import Wishlist from "./pages/Wishlist";

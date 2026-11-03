@@ -3,11 +3,13 @@ import { useLoginMutation } from "../services/authApi";
 import { useAppDispatch } from "../app/hooks";
 import type { LoginRequest } from "../types/api";
 import { setCreds } from "../features/auth/authSlice";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useAppDispatch();
@@ -17,8 +19,8 @@ function Login() {
     e.preventDefault();
 
     const loginRequest: LoginRequest = {
-      email: email,
-      password: password,
+      email: formData.email,
+      password: formData.password,
     };
 
     try {
@@ -36,7 +38,7 @@ function Login() {
 
       navigate("/products", { replace: true });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -44,20 +46,29 @@ function Login() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-xl border border-slate-100">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Sign in to your account</h2>
-          <p className="mt-2 text-sm text-slate-600">Please enter your credentials below</p>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Please enter your credentials below
+          </p>
         </div>
 
         <form className="space-y-5" onSubmit={formSubmitHandler}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-slate-700"
+            >
               Email address
             </label>
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, email: e.target.value }))
+              }
               required
               placeholder="you@example.com"
               className="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600/20"
@@ -65,14 +76,19 @@ function Login() {
           </div>
 
           <div className="form-password">
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-700"
+            >
               Password
             </label>
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, password: e.target.value }))
+              }
               required
               minLength={4}
               placeholder="••••••••"
@@ -82,7 +98,10 @@ function Login() {
 
           {error && (
             <div className="rounded-lg bg-red-50 p-3 border border-red-200">
-              <p role="alert" className="text-sm font-medium text-red-600 text-center">
+              <p
+                role="alert"
+                className="text-sm font-medium text-red-600 text-center"
+              >
                 Login failed. Please check your credentials.
               </p>
             </div>
@@ -96,6 +115,16 @@ function Login() {
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <div className="flex items-center justify-center gap-0.5 mt-2">
+          <p>New here?</p>
+          <Link
+            to="/register"
+            className="ml-0.5 underline text-blue-400 hover:text-blue-800 transition-colors"
+          >
+            Create an account
+          </Link>
+        </div>
       </div>
     </div>
   );
