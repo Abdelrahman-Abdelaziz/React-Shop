@@ -30,14 +30,14 @@ function CartLine({ item }: CartLineProps) {
         try {
             await removeFromCart(item.productId);
         } catch {
-            console.log(console.log("Failed to update cart quantity"));
+            console.log("Failed to update cart quantity");
         }
     }
 
     try {
       await updateCartItem({
         productId: item.productId,
-        quantity: selectedQuantity,
+        quantity: value,
       }).unwrap();
     } catch {
       console.log("Failed to update cart quantity");
